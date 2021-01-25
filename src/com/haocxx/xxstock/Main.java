@@ -1,6 +1,6 @@
 package com.haocxx.xxstock;
 
-import com.haocxx.xxstock.base.network.HttpUtil;
+import com.haocxx.xxstock.base.core.Looper;
 import com.haocxx.xxstock.sina.SinaStockHelper;
 
 /**
@@ -9,9 +9,14 @@ import com.haocxx.xxstock.sina.SinaStockHelper;
  */
 public class Main {
 
+    /**
+     * 阿里巴巴 hk09988
+     * 小米 hk01810
+     */
     public static void main(String[] args) {
-        String result = HttpUtil.doGetRequest("http://hq.sinajs.cn/list=sh601006");
-        StockDataModel model = SinaStockHelper.parseFromSina(result);
-	    System.out.println(result);
+        Looper.initMain();
+        SinaStockHelper.start("hk01810");
+        Looper.getMainLooper().loop();
+        Looper.exit();
     }
 }

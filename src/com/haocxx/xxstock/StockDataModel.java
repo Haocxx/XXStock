@@ -9,7 +9,17 @@ import java.io.Serializable;
  * on 2021-1-24
  */
 public class StockDataModel implements Serializable {
+    public enum StockType {
+        HK, //港股
+        SZ, //深股
+        SH, //沪股
+    }
 
+    public StockDataModel(StockType stockType) {
+        this.stockType = stockType;
+    }
+
+    public final StockType stockType;
     public String stockName; //股票名字
     public double todayOpenPrice; //今日开盘价
     public double yesterdayClosePrice; //昨日收盘价
