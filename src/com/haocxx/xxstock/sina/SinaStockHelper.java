@@ -28,7 +28,6 @@ public class SinaStockHelper {
                         Log.debug("今日最低价", String.valueOf(result.todayLowestPrice));
                         Log.debug("==============================");
                     });
-
                 }
                 try {
                     Thread.sleep(4000);
@@ -49,6 +48,8 @@ public class SinaStockHelper {
             return parseSZFromSina(sinaData);
         } else if (stockCode.startsWith("sh")) {
             return parseSHFromSina(sinaData);
+        } else if (stockCode.startsWith("gb_")) {
+            return parseUSFromSina(sinaData);
         } else {
             return null;
         }
@@ -107,6 +108,29 @@ public class SinaStockHelper {
             model.currentPrice = Double.parseDouble(properties[6]);
             model.todayHighestPrice = Double.parseDouble(properties[4]);
             model.todayLowestPrice = Double.parseDouble(properties[5]);
+            return model;
+        } catch (Throwable e) {
+            Log.debug(TAG, "bad format sinaData, no split sign: " + sinaData);
+            return null;
+        }
+    }
+
+    /**
+     * 解析A股数据
+     */
+    private static StockDataModel parseUSFromSina(String sinaData) {
+        try {
+            int startIndex = sinaData.indexOf("\"");
+            int lastIndex = sinaData.lastIndexOf("\"");
+            sinaData = sinaData.substring(startIndex + 1, lastIndex);
+            String[] properties = sinaData.split(",");
+            StockDataModel model = new StockDataModel(StockDataModel.StockType.US);
+            model.stockName = properties[0];
+            model.todayOpenPrice = Double.parseDouble(properties[5]);
+            model.yesterdayClosePrice = Double.parseDouble(properties[26]);
+            model.currentPrice = Double.parseDouble(properties[1]);
+            model.todayHighestPrice = Double.parseDouble(properties[6]);
+            model.todayLowestPrice = Double.parseDouble(properties[7]);
             return model;
         } catch (Throwable e) {
             Log.debug(TAG, "bad format sinaData, no split sign: " + sinaData);

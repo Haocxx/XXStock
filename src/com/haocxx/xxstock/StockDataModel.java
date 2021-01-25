@@ -13,6 +13,7 @@ public class StockDataModel implements Serializable {
         HK, //港股
         SZ, //深股
         SH, //沪股
+        US, //美股
     }
 
     public StockDataModel(StockType stockType) {
